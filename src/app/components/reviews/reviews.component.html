@@ -1,0 +1,67 @@
+<div id="stars-wrapper">
+  <div class="wrapper">
+    <nz-rate [ngModel]="reviewInfo.rating" nzDisabled></nz-rate>
+    <span class="add-review" (click)="openModal()">Add A Review</span>
+  </div>
+
+  <div class="existing-ratings">
+    <h2>Reviews</h2>
+    <div
+      *ngFor="let review of productRatingAndReviews.productReviews"
+      class="existing-rating"
+    >
+      <div class="review-header">
+        <h4>{{ review.user.fullName }}</h4>
+        <h5>{{ review.dateStamp | date : "MMM d, y" }}</h5>
+      </div>
+      <div class="rating">
+        <nz-rate
+          [ngModel]="review.productRating.ratingValue"
+          nzDisabled
+        ></nz-rate>
+      </div>
+      <p>{{ review.reviewText }}</p>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div *ngIf="showModal" class="modal">
+  <div class="modal-content">
+    <h2>Add Review</h2>
+    <div *ngIf="hasErrors()">
+      <nz-alert
+        *ngFor="let field of errorKeys()"
+        nzShowIcon
+        nzType="error"
+        [nzMessage]="validationError[field]"
+        [ngStyle]="{ 'margin-bottom': '16px' }"
+      ></nz-alert>
+    </div>
+
+    <form (ngSubmit)="onSubmit()">
+      <div class="input-container">
+        <label for="ratingValue">Rating</label>
+        <nz-rate
+          [(ngModel)]="addReview.ratingValue"
+          name="ratingValue"
+        ></nz-rate>
+      </div>
+      <div class="input-container">
+        <label for="review">Review</label>
+        <textarea
+          rows="4"
+          nz-input
+          [(ngModel)]="addReview.review"
+          name="review"
+        ></textarea>
+      </div>
+      <div class="cta-container">
+        <button nz-button type="submit" [nzLoading]="loading">
+          Add Review
+        </button>
+        <button nz-button type="button" (click)="closeModal()">Close</button>
+      </div>
+    </form>
+  </div>
+</div>

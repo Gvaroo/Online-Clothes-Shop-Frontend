@@ -1,0 +1,37 @@
+<div class="product-card">
+  <div class="product-card__image" routerLink="/product/{{ getProducts?.id }}">
+    <img src="{{ getProducts?.image?.imageUrl }}" alt="" />
+  </div>
+  <div class="product-card__info">
+    <header>
+      <div class="title">
+        <div class="product-name" title="{{ getProducts?.name }}">
+          {{ getProducts?.name }}
+        </div>
+        <div class="product-short-desc">{{ getProducts?.category.name }}</div>
+      </div>
+      <div class="product-price">
+        {{ getProducts?.price | currency : "USD" }}
+      </div>
+    </header>
+  </div>
+  <div class="product-card__cta">
+    <button
+      nz-button
+      [disabled]="getProducts?.quantity === 0"
+      (click)="
+        onAdd({
+          productId: getProducts?.id,
+          price: getProducts?.price,
+          image: getProducts?.image?.imageUrl,
+          name: getProducts?.name,
+          quantity: 1,
+          maxQuantity: getProducts?.quantity,
+          sizeId: getProducts?.defaultSize.sizeId
+        })
+      "
+    >
+      {{ getProducts?.quantity === 0 ? "Out of stock" : "Add to cart" }}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,136 @@
+.footer {
+  margin-top: 5%;
+  background-color: #222;
+  color: #fff;
+  padding: 40px 20px;
+  font-family: "Arial", sans-serif;
+  text-align: left;
+}
+
+.footer__container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer__section {
+  flex: 1 1 200px;
+  margin: 20px;
+}
+
+.footer__section h4 {
+  margin-bottom: 15px;
+  font-size: 1.25rem;
+  border-bottom: 2px solid #ff4d4f;
+  display: inline-block;
+  padding-bottom: 5px;
+  color: #fff;
+  line-height: 32px;
+  font-weight: 600;
+  text-transform: capitalize;
+  font-family: "Josefin Sans", sans-serif;
+}
+
+.footer__section p,
+.footer__section ul,
+.footer__section form {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 10px 0;
+  font-family: "Josefin Sans", sans-serif;
+}
+
+.footer__section ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer__section ul li {
+  margin-bottom: 10px;
+}
+
+.footer__section ul li a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer__section ul li a:hover {
+  color: #ff4d4f;
+}
+
+.footer__subscribe form {
+  display: flex;
+  width: 100%;
+}
+
+.footer__subscribe input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+  outline: none;
+  font-size: 1rem;
+}
+
+.footer__subscribe button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  background-color: #ff4d4f;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.footer__subscribe button:hover {
+  background-color: #e04445;
+}
+
+.footer__social .social-icons {
+  display: flex;
+  align-items: center;
+}
+
+.footer__social .social-icons a {
+  color: #fff;
+  margin-right: 10px;
+  font-size: 1.5rem;
+  transition: color 0.3s;
+}
+
+.footer__social .social-icons a:hover {
+  color: #ff4d4f;
+}
+
+.footer__bottom {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.875rem;
+}
+
+@media (max-width: 768px) {
+  .footer__container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .footer__section {
+    margin: 20px 0;
+    text-align: center;
+  }
+
+  .footer__subscribe form {
+    flex-direction: column;
+  }
+
+  .footer__subscribe input,
+  .footer__subscribe button {
+    border-radius: 4px;
+    margin: 5px 0;
+  }
+}

@@ -1,0 +1,32 @@
+<nz-alert
+  *ngIf="errorMessage"
+  nzShowIcon
+  nzType="error"
+  [nzMessage]="errorMessage"
+  [ngStyle]="{ 'margin-bottom': '16px' }"
+></nz-alert>
+<div *ngIf="confirmationMessage !== ''" class="container">
+  <div class="md-card container-shadow">
+    <div class="card-header">Email Confirmation</div>
+    <div class="content-section">
+      <h3>{{ confirmationMessage }}</h3>
+      <a *ngIf="!isLoggedIn" routerLink="/login"
+        >Click here to login to your Account</a
+      >
+      <a *ngIf="isLoggedIn" routerLink="/">Go to Home</a>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isVerified" class="container">
+  <div class="md-card container-shadow">
+    <div class="card-header">Email Confirmation</div>
+    <div class="content-section">
+      <h3>{{ confirmationMessage }}</h3>
+      <a *ngIf="!isLoggedIn" routerLink="/login"
+        >Click here to login to your Account</a
+      >
+      <a *ngIf="isLoggedIn" routerLink="/">Go to Home</a>
+    </div>
+  </div>
+</div>

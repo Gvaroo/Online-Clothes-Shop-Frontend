@@ -1,0 +1,230 @@
+<div class="checkout-container">
+  <div class="progress-container">
+    <nz-progress
+      [nzPercent]="getProgressPrecent()"
+      [nzShowInfo]="false"
+      [nzStrokeWidth]="3"
+    ></nz-progress>
+  </div>
+
+  <!-- FIRST STEP -->
+  <div *ngIf="currentStep === 1">
+    <div class="billing-container">
+      <h2>Billing Address</h2>
+      <form>
+        <div class="input-container">
+          <label for="">Full name</label>
+          <input
+            nz-input
+            type="text"
+            name="fullName"
+            value="{{ this.fullName }}"
+            [disabled]
+          />
+        </div>
+        <div class="input-container">
+          <label for="">Email</label>
+          <input
+            nz-input
+            type="text"
+            name="Email"
+            value="{{ this.email }}"
+            disabled
+          />
+        </div>
+        <div class="input-container">
+          <label for="">Address</label>
+          <input
+            nz-input
+            type="text"
+            name="address"
+            [(ngModel)]="shippingInfo.shippingAddress"
+            placeholder="Enter your shipping address"
+          />
+        </div>
+        <div class="input-container">
+          <label for="">City</label>
+          <input
+            nz-input
+            type="text"
+            name="city"
+            value="{{ shippingInfo.shippingCity }}"
+            [(ngModel)]="shippingInfo.shippingCity"
+            placeholder="Enter your shipping city"
+          />
+        </div>
+        <div class="input-container">
+          <label for="">Country</label>
+          <input
+            nz-input
+            type="text"
+            name="country"
+            value="{{ shippingInfo.shippingCountry }}"
+            [(ngModel)]="shippingInfo.shippingCountry"
+            placeholder="Enter your shipping Country"
+          />
+        </div>
+        <div class="input-container">
+          <label for="">Zip Code</label>
+          <input
+            nz-input
+            type="text"
+            name="zipCode"
+            value="{{ shippingInfo.zipCode }}"
+            [(ngModel)]="shippingInfo.zipCode"
+            placeholder="Enter your shipping zipCode"
+          />
+        </div>
+        <div class="input-container">
+          <label for="">Phone Number</label>
+          <input
+            nz-input
+            type="number"
+            name="number"
+            value="{{ shippingInfo.phoneNumber }}"
+            [(ngModel)]="shippingInfo.phoneNumber"
+            placeholder="Enter your phoneNumber"
+          />
+        </div>
+      </form>
+      <button nz-button (click)="submitBilling()">Continue</button>
+    </div>
+  </div>
+  <!-- SECOND STEP -->
+  <div *ngIf="currentStep === 2">
+    <div class="payment-container">
+      <h2>Payment Details</h2>
+      <form>
+        <div class="input-container">
+          <label for="">Card number</label>
+          <input
+            nz-input
+            type="text"
+            name="cardNumber"
+            [(ngModel)]="cardNumber"
+            placeholder="1234 1234 1234 1234"
+          />
+        </div>
+        <div class="input-container">
+          <label for="">Name on card</label>
+          <input
+            nz-input
+            type="text"
+            name="cardName"
+            [(ngModel)]="cardName"
+            placeholder="John Doe"
+          />
+        </div>
+        <div class="‼️">
+          <div class="input-container">
+            <label for="">Expiry date</label>
+            <input
+              nz-input
+              type="text"
+              name="cardExpiry"
+              [(ngModel)]="cardExpiry"
+              placeholder="06/30"
+            />
+          </div>
+          <div class="input-container">
+            <label for="">Security code</label>
+            <input
+              nz-input
+              type="text"
+              name="cardCode"
+              [(ngModel)]="cardCode"
+              placeholder="123"
+            />
+          </div>
+        </div>
+      </form>
+      <button
+        nz-button
+        [disabled]="!canPaymentSubmit()"
+        (click)="submitPayment()"
+      >
+        Continue
+      </button>
+    </div>
+  </div>
+  <!-- THIRD STEP -->
+  <div *ngIf="currentStep === 3">
+    <div class="summary-container">
+      <div class="summary-container__order">
+        <h2>Order Summary</h2>
+        <div class="details">
+          <div><span>Item(s)</span> {{ cartData.products.length }}</div>
+          <div><span>Payment method</span> Credit</div>
+          <div>
+            <span>Order total</span> {{ getCartTotal() | currency : "USD" }}
+          </div>
+        </div>
+        <button
+          nz-button
+          nzType="primary"
+          (click)="submitCheckout()"
+          [nzLoading]="loading"
+        >
+          Place order
+        </button>
+      </div>
+      <div class="summary-container__items">
+        <h2>Order Items</h2>
+        <div class="item-list">
+          <div class="item-container" *ngFor="let item of cartData.products">
+            <div class="item-image">
+              <img [src]="item.image" alt="" />
+            </div>
+            <div class="item-title">
+              {{ item.name }}
+            </div>
+            <div class="item-title">
+              {{ item.productSize }}
+            </div>
+            <div class="item-total">
+              {{ item.price | currency : "USD" }} x {{ item.quantity }} =
+              {{ item.quantity * item.price | currency : "USD" }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- LAST STEP - THANK YOU -->
+  <div *ngIf="currentStep === 4">
+    <div class="confirmation-container">
+      <header>
+        <div class="title">
+          <h1>Thank you!</h1>
+          <p>Please check your email for the order confirmation</p>
+        </div>
+        <div class="order-id">
+          Order ID: <span>{{ orderId }}</span>
+        </div>
+      </header>
+      <button nz-button class="cta-button" routerLink="/">
+        Continue shopping
+      </button>
+      <div class="products-container">
+        <h2>Order Summary</h2>
+        <div class="products-container__list">
+          <div class="list-item" *ngFor="let item of products">
+            <div class="item-image">
+              <img [src]="item.image" alt="" />
+            </div>
+            <div class="item-title">
+              {{ item.name }}
+            </div>
+            <div class="item-title">
+              {{ item.productSize }}
+            </div>
+            <div class="item-total">
+              {{ item.price | currency : "USD" }} x {{ item.quantity }} =
+              {{ item.quantity * item.price | currency : "USD" }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,209 @@
+<div class="register-container">
+  <div class="form-container">
+    <h2>Add Product</h2>
+    <div *ngIf="errorMessage" class="error-container">{{ errorMessage }}</div>
+    <form #registerForm="ngForm" (ngSubmit)="onSubmit()">
+      <div class="input-container">
+        <label for="fullName">Product Name</label>
+        <input
+          nz-input
+          type="text"
+          name="name"
+          [(ngModel)]="productInfo.name"
+          placeholder="Enter your product name"
+          nzBorderless
+        />
+      </div>
+      <div class="input-container">
+        <label for="description">Product Description</label>
+        <textarea
+          nz-input
+          rows="2"
+          name="description"
+          [(ngModel)]="productInfo.description"
+          placeholder="Write product description"
+          nzBorderless
+        ></textarea>
+      </div>
+      <div class="input-container">
+        <label for="price">Product Price</label>
+        <input
+          nz-input
+          type="number"
+          name="price"
+          [(ngModel)]="productInfo.price"
+          placeholder="Enter product price"
+          nzBorderless
+        />
+      </div>
+      <div class="input-container">
+        <label for="quantity">Product Quantity</label>
+        <input
+          nz-input
+          type="number"
+          name="quantity"
+          [(ngModel)]="productInfo.quantity"
+          placeholder="Enter product quantity"
+          nzBorderless
+        />
+      </div>
+      <div class="input-group">
+        <div class="input-container">
+          <label for="category">Product Category</label>
+          <nz-select
+            nzAllowClear
+            [(ngModel)]="productInfo.categoryId"
+            name="categoryId"
+            (ngModelChange)="sortChange($event)"
+            nzBorderless
+            nzPlaceHolder="Category"
+          >
+            <nz-option
+              *ngFor="let f of filterOptions.categories"
+              [nzValue]="f.id"
+              [nzLabel]="f.name"
+            ></nz-option>
+          </nz-select>
+        </div>
+        <div class="input-container">
+          <label for="subCategory">Product Type</label>
+          <nz-select
+            nzAllowClear
+            [(ngModel)]="productInfo.subCategoryId"
+            name="subCategoryId"
+            (ngModelChange)="sortChange($event)"
+            nzPlaceHolder="Type"
+            nzBorderless
+          >
+            <nz-option
+              *ngFor="let f of filterOptions.subCategories"
+              [nzValue]="f.id"
+              [nzLabel]="f.name"
+            ></nz-option>
+          </nz-select>
+        </div>
+        <div class="input-container">
+          <label for="gender">Suited Gender</label>
+          <nz-select
+            nzAllowClear
+            [(ngModel)]="productInfo.genderId"
+            name="genderId"
+            nzBorderless
+            (ngModelChange)="sortChange($event)"
+            nzPlaceHolder="Gender"
+          >
+            <nz-option
+              *ngFor="let f of filterOptions.genders"
+              [nzValue]="f.id"
+              [nzLabel]="f.name"
+            ></nz-option>
+          </nz-select>
+        </div>
+        <div class="input-container">
+          <label for="size">Product Size</label>
+          <nz-select
+            nzMode="multiple"
+            nzAllowClear
+            [(ngModel)]="productInfo.sizeIds"
+            name="sizeIds"
+            (ngModelChange)="sortChange($event)"
+            nzPlaceHolder="Size"
+            nzBorderless
+          >
+            <nz-option
+              *ngFor="let size of filterOptions.sizes"
+              [nzValue]="size.sizeId"
+              [nzLabel]="size.sizeName"
+            ></nz-option>
+          </nz-select>
+        </div>
+        <div class="input-container">
+          <label for="color">Product Color</label>
+          <nz-select
+            nzAllowClear
+            nzMode="multiple"
+            [(ngModel)]="productInfo.colorIds"
+            name="colorIds"
+            nzBorderless
+            (ngModelChange)="sortChange($event)"
+            nzPlaceHolder="Color"
+          >
+            <nz-option
+              *ngFor="let f of filterOptions.colors"
+              [nzValue]="f.id"
+              [nzLabel]="f.name"
+            ></nz-option>
+          </nz-select>
+        </div>
+        <div class="input-container">
+          <label for="brand">Product Brand</label>
+          <nz-select
+            nzAllowClear
+            [(ngModel)]="productInfo.brandId"
+            name="brandId"
+            (ngModelChange)="onBrandChange($event)"
+            nzPlaceHolder="Brand"
+            nzBorderless
+            *ngIf="!isAddingNewBrand"
+          >
+            <nz-option
+              *ngFor="let f of filterOptions.brands"
+              [nzValue]="f.id"
+              [nzLabel]="f.name"
+            ></nz-option>
+            <nz-option nzCustomContent nzValue="new">
+              <span style="color: #1890ff">+ New Brand</span>
+            </nz-option>
+          </nz-select>
+          <div *ngIf="isAddingNewBrand" class="new-brand-container">
+            <input
+              nz-input
+              type="text"
+              #brandInput
+              (input)="onBrandInputChange(brandInput.value)"
+              placeholder="Enter new brand"
+            />
+            <button nz-button nzType="default" (click)="cancelNewBrand()">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="input-container">
+        <label for="images">Product Images</label>
+        <nz-upload
+          nzListType="picture-card"
+          [(nzFileList)]="fileList"
+          [nzShowButton]="fileList.length < 8"
+          [nzPreview]="handlePreview"
+          (nzChange)="handleChange($event)"
+        >
+          <div>
+            <span nz-icon nzType="plus"></span>
+            <div style="margin-top: 8px">Upload</div>
+          </div>
+        </nz-upload>
+        <nz-modal
+          [nzVisible]="previewVisible"
+          [nzContent]="modalContent"
+          [nzFooter]="null"
+          (nzOnCancel)="previewVisible = false"
+        >
+          <ng-template #modalContent>
+            <img [src]="previewImage" [ngStyle]="{ width: '100%' }" />
+          </ng-template>
+        </nz-modal>
+      </div>
+      <div class="cta-container">
+        <button
+          nz-button
+          type="submit"
+          [disabled]="!canSubmit()"
+          [nzLoading]="loading"
+        >
+          Add Product
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

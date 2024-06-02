@@ -1,0 +1,301 @@
+<div class="home-container">
+  <div class="banner">
+    <img src="assets/home/banner.png" alt="Shop Banner" class="banner-image" />
+  </div>
+  <div class="products">
+    <div class="products__filter" *ngIf="filterOptions != undefined">
+      <ul *ngIf="isLargeOrMediumScreen()" class="filter__options">
+        <li class="filter__options__category" *ngFor="let filter of filters">
+          <nz-select
+            class="filter__options__category__select"
+            nzAllowClear
+            [(ngModel)]="filterData[filter.key]"
+            (ngModelChange)="sortChange($event)"
+            [nzPlaceHolder]="filter.placeholder"
+            nzBorderless
+          >
+            <nz-option
+              *ngFor="let option of filterOptions[filter.optionsKey]"
+              [nzValue]="option.id"
+              [nzLabel]="option.name"
+            ></nz-option>
+          </nz-select>
+        </li>
+
+        <li class="filter__options__category">
+          <nz-select
+            class="filter__options__category__select"
+            nzAllowClear
+            [(ngModel)]="filterData.sizeId"
+            (ngModelChange)="sortChange($event)"
+            nzPlaceHolder="Size"
+            nzBorderless
+          >
+            <nz-option
+              *ngFor="let size of filterOptions.sizes"
+              [nzValue]="size.sizeId"
+              [nzLabel]="size.sizeName"
+            ></nz-option>
+          </nz-select>
+        </li>
+        <li class="filter__options__category">
+          <button
+            nz-button
+            nz-dropdown
+            nzTrigger="click"
+            [nzDropdownMenu]="menu"
+            class="filter__options__category__button"
+          >
+            {{ dropdownValue }}
+            <span nz-icon nzType="down"></span>
+          </button>
+          <nz-dropdown-menu #menu="nzDropdownMenu">
+            <div class="price-range-inputs">
+              <input
+                type="number"
+                nz-input
+                placeholder="Minimum"
+                [(ngModel)]="filterData.minimumPrice"
+                (input)="updateDropdownValue(false)"
+                class="price-range-input"
+              />
+              <input
+                type="number"
+                nz-input
+                placeholder="Maximum"
+                [(ngModel)]="filterData.maximumPrice"
+                (input)="updateDropdownValue(false)"
+                class="price-range-input"
+              />
+            </div>
+          </nz-dropdown-menu>
+        </li>
+        <li class="filter__options__category">
+          <nz-input-group
+            [nzSuffix]="suffixIconSearch"
+            nzBorderless
+            class="filter__options__search"
+          >
+            <input
+              type="text"
+              nz-input
+              [(ngModel)]="filterData.productName"
+              placeholder="Search Product"
+              class="filter__options__search__input"
+            />
+          </nz-input-group>
+          <ng-template #suffixIconSearch>
+            <span
+              style="cursor: pointer"
+              (click)="searchProduct()"
+              nz-icon
+              nzType="search"
+            ></span>
+          </ng-template>
+        </li>
+        <li class="filter__options__category">
+          <button
+            *ngIf="shouldShowClearAll()"
+            nz-button
+            nzType="default"
+            class="clear-all-button"
+            (click)="clearItems()"
+          >
+            Clear All
+          </button>
+        </li>
+      </ul>
+      <div *ngIf="isMobileScreen()">
+        <nz-select
+          class="mobileButton"
+          [(ngModel)]="filterData.sortId"
+          (ngModelChange)="sortChange($event)"
+          nzPlaceHolder="Sort"
+          nzBorderless
+        >
+          <nz-option
+            *ngFor="let f of filterOptions?.sortOptions"
+            [nzValue]="f.id"
+            [nzLabel]="f.name"
+          ></nz-option>
+        </nz-select>
+        <button
+          class="mobileButton"
+          nz-button
+          (click)="toggleMenu()"
+          nzType="default"
+        >
+          <span>Filter</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="products__header">
+      <h2>Products</h2>
+    </div>
+    <div *ngIf="loading" class="products__loading">
+      <ng-template #indicatorTemplate>
+        <i
+          nz-icon
+          nzType="loading"
+          [ngStyle]="{ 'font-size': '2rem', margin: '0 auto' }"
+        ></i>
+      </ng-template>
+      <nz-spin nzSimple [nzIndicator]="indicatorTemplate"></nz-spin>
+    </div>
+    <div class="products__list" *ngIf="!loading">
+      <div *ngIf="isFilterDataNull"><nz-empty></nz-empty></div>
+      <app-product-card
+        *ngFor="let product of products"
+        [getProducts]="product"
+        [onAdd]="cartService.addProduct.bind(cartService)"
+      ></app-product-card>
+    </div>
+    <nz-pagination
+      [(nzPageIndex)]="pageIndex"
+      [(nzPageSize)]="pageSize"
+      [nzTotal]="totalProducts"
+      [nzResponsive]
+      (nzPageIndexChange)="onPageIndexChange($event)"
+    ></nz-pagination>
+  </div>
+</div>
+
+<div
+  *ngIf="filterOptions != undefined"
+  [className]="isMenuOpen ? 'side-menu show' : 'side-menu'"
+>
+  <i nz-icon nzType="close" nzTheme="outline" (click)="toggleMenu()"></i>
+  <div class="side-menu__content">
+    <ul nz-menu nzMode="inline" [nzSelectable] cdkScrollable>
+      <li nz-submenu nzTitle="Gender" nzIcon="setting">
+        <ul>
+          <li
+            nz-menu-item
+            *ngFor="let item of filterOptions.genders"
+            [class.active]="filterData.genderId === item.id"
+          >
+            <a (click)="onMobileFilterSelected('genderId', item.id)">
+              {{ item.name }}
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Category" nzIcon="Mall" nzOpen>
+        <ul>
+          <ul>
+            <li
+              nz-menu-item
+              *ngFor="let item of filterOptions.categories"
+              [class.active]="filterData.categoryId === item.id"
+            >
+              <a (click)="onMobileFilterSelected('categoryId', item.id)">
+                {{ item.name }}
+              </a>
+            </li>
+          </ul>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Product Type" nzIcon="appstore">
+        <ul>
+          <li
+            nz-menu-item
+            *ngFor="let item of filterOptions.subCategories"
+            [class.active]="filterData.subCategoryId === item.id"
+          >
+            <a (click)="onMobileFilterSelected('subCategoryId', item.id)">
+              {{ item.name }}
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Brand" nzIcon="setting">
+        <ul>
+          <li
+            nz-menu-item
+            *ngFor="let item of filterOptions.brands"
+            [class.active]="filterData.brandId === item.id"
+          >
+            <a (click)="onMobileFilterSelected('brandId', item.id)">
+              {{ item.name }}
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Product Size" nzIcon="setting">
+        <ul>
+          <li
+            nz-menu-item
+            *ngFor="let item of filterOptions.sizes"
+            [class.active]="filterData.sizeId === item.sizeId"
+          >
+            <a (click)="onMobileFilterSelected('sizeId', item.sizeId)">
+              {{ item.sizeName }}
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Product Color" nzIcon="setting">
+        <ul>
+          <li
+            nz-menu-item
+            *ngFor="let item of filterOptions.colors"
+            [class.active]="filterData.colorId === item.id"
+          >
+            <a (click)="onMobileFilterSelected('colorId', item.id)">
+              {{ item.name }}
+            </a>
+          </li>
+        </ul>
+      </li>
+      <li nz-submenu nzTitle="Product Price Range" nzIcon="setting">
+        <ul>
+          <div style="padding: 8px">
+            <input
+              type="number"
+              nz-input
+              placeholder="Minimum"
+              [(ngModel)]="filterData.minimumPrice"
+              (input)="updateDropdownValue(true)"
+              style="width: 100%"
+              pattern="[0-9]"
+            />
+            <input
+              type="number"
+              nz-input
+              placeholder="Maximum"
+              [(ngModel)]="filterData.maximumPrice"
+              (input)="updateDropdownValue(true)"
+              pattern="[0-9]"
+              style="width: 100%; margin-top: 8px"
+            />
+          </div>
+        </ul>
+      </li>
+      <li>
+        <nz-input-group
+          [nzSuffix]="suffixIconSearch"
+          nzBorderless
+          class="filter__options__search"
+        >
+          <input
+            class="filter__options__search__button"
+            style="margin-top: 5%"
+            type="text"
+            nz-input
+            [(ngModel)]="filterData.productName"
+            placeholder="Search With Product Name"
+          />
+        </nz-input-group>
+        <ng-template #suffixIconSearch>
+          <span nz-icon nzType="search"></span>
+        </ng-template>
+      </li>
+    </ul>
+
+    <div class="🍑">
+      <button nz-button (click)="filterMobileItems()">Search Items</button>
+      <button nz-button (click)="clearItems()">Clear Filter</button>
+    </div>
+  </div>
+</div>

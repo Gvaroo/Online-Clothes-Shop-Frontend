@@ -1,0 +1,28 @@
+<div class="order-history-container">
+  <h2>Order History</h2>
+  {{ error }}
+  <nz-table #basicTable [nzData]="orders" *ngIf="orders.length > 0">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Quantity</th>
+        <th>Original Price</th>
+        <th>Total Price</th>
+        <th>Size</th>
+        <th>OrderID</th>
+        <th>OrderDate</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of basicTable.data">
+        <td>{{ item.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.originalPrice }}$</td>
+        <td>{{ item.totalPrice }}$</td>
+        <td>{{ item.productSize }}</td>
+        <td>{{ item.orderId }}</td>
+        <td>{{ item.orderDate }}</td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

@@ -1,0 +1,124 @@
+<div class="profile-container">
+  <div *ngIf="currentStep == 1" class="form-container">
+    <h2>Update Profile</h2>
+    <nz-alert
+      nzShowIcon
+      [nzMessage]="alertMessage"
+      [nzType]="alertType"
+      *ngIf="alertVisible"
+      [ngStyle]="{ marginBottom: '12px' }"
+    ></nz-alert>
+    <form (ngSubmit)="onSubmit()">
+      <div class="section-container">
+        <h3>Personal Information</h3>
+        <div class="input-container">
+          <label for="email">Email</label>
+          <input
+            nz-input
+            type="email"
+            id="email"
+            name="email"
+            [disabled]="isExternalUser"
+            [(ngModel)]="profile.email"
+            placeholder="Enter your email"
+          />
+        </div>
+        <div class="input-container">
+          <label for="fullName">Full Name</label>
+          <input
+            nz-input
+            type="text"
+            id="fullName"
+            name="fullName"
+            [(ngModel)]="profile.fullName"
+            placeholder="Enter your full name"
+          />
+        </div>
+      </div>
+
+      <div
+        *ngIf="!isExternalUser"
+        class="section-container optional-password-section"
+      >
+        <h3 (click)="togglePasswordChange()">
+          Change Password
+          <span class="toggle-icon">{{ showPasswordChange ? "▼" : "►" }}</span>
+        </h3>
+        <div *ngIf="showPasswordChange">
+          <div class="input-container">
+            <label for="currentPassword">Current Password</label>
+            <input
+              nz-input
+              type="password"
+              id="currentPassword"
+              name="currentPassword"
+              [(ngModel)]="profile.currentPassword"
+              placeholder="Enter your current password"
+            />
+          </div>
+          <div class="input-container">
+            <label for="newPassword">New Password</label>
+            <input
+              nz-input
+              type="password"
+              id="newPassword"
+              name="newPassword"
+              [(ngModel)]="profile.newPassword"
+              placeholder="Enter new password"
+            />
+          </div>
+          <div class="input-container">
+            <label for="confirmPassword">Confirm New Password</label>
+            <input
+              nz-input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              [(ngModel)]="confirmPassword"
+              placeholder="Confirm new password"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="cta-container">
+        <button nz-button nzType="primary" type="submit" [nzLoading]="loading">
+          Update
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="currentStep == 2" class="form-container">
+    <h2>Email Verification</h2>
+    <p>
+      A verification code has been sent to your email. Please check your spam
+      folder if you can't find it. The verification code expires in 15 minutes.
+    </p>
+    <nz-alert
+      nzShowIcon
+      [nzMessage]="alertMessage"
+      [nzType]="alertType"
+      *ngIf="alertVisible"
+      [ngStyle]="{ marginBottom: '12px' }"
+    ></nz-alert>
+    <form (ngSubmit)="onConfirm()">
+      <div class="input-container">
+        <label for="verificationCode">Verification Code</label>
+        <input
+          nz-input
+          type="text"
+          id="verificationCode"
+          name="verificationCode"
+          [(ngModel)]="profile.verificationCode"
+          placeholder="Enter the verification code"
+        />
+      </div>
+      <div class="cta-container">
+        <button nz-button nzType="primary" type="submit" [nzLoading]="loading">
+          Confirm
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

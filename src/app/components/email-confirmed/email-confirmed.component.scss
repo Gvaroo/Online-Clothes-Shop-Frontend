@@ -1,0 +1,133 @@
+$font-family-sans: Helvetica, Arial, sans-serif !default;
+$font-family-serif: Georgia;
+$font-family-monospace: Courier;
+
+// Colors
+$white: #ffffff;
+$black: #000000;
+$off-white: #f4f5f6;
+$grey-dark: #929292;
+$grey-medium: #d8d8d8;
+$grey-medium2: #e2e2e2;
+$grey-light: #b0b4ba;
+
+// link colors
+$link-color: #4caeeb;
+
+// background colors
+$background-green: #1ead37;
+$blue: #0a92e5;
+$blue-medium: #4caeeb;
+$blue-dark: #07507a;
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f4f5f6;
+}
+
+a.image-link {
+  text-decoration: none;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+.h1,
+.h2,
+.h3,
+.h4 {
+  font-family: $font-family-sans;
+  font-weight: 300;
+  color: rgba(0, 0, 0, 0.8);
+}
+h1,
+.h1 {
+  font-size: 40px;
+  line-height: 42px;
+}
+
+.largeprint {
+  font-size: 28px;
+  line-height: 35px;
+}
+
+h2,
+.h2 {
+  font-size: 21px;
+  line-height: 28px;
+}
+
+h3,
+.h3 {
+  font-size: 18px;
+  line-height: 24px;
+}
+
+h4,
+.h4,
+p {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.fineprint {
+  font-size: 11px;
+  line-height: 24px;
+}
+
+b,
+.bold {
+  font-weight: bold;
+}
+
+.icon {
+  display: block;
+  border: 0;
+  margin: 15px 0 32px 0;
+  padding-bottom: 10px;
+}
+.center {
+  text-align: center;
+  margin: 0 auto !important;
+}
+
+.container {
+  width: 100%;
+  min-width: 320px;
+  height: 100%;
+}
+
+.md-card {
+  background-color: $off-white;
+  max-width: 600px;
+  min-height: 300px;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 10%;
+
+  &.container-shadow {
+    border-radius: 5px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    z-index: 99;
+    background-color: $white;
+  }
+
+  .card-header {
+    font-family: $font-family-sans;
+    min-height: 12px;
+    background-color: $blue;
+    color: $white;
+    font-size: 24px;
+    line-height: 35px;
+    text-align: left;
+    padding: 10px 20px;
+    border-radius: 5px 5px 0 0;
+  }
+
+  .content-section {
+    margin-top: 30px;
+  }
+}

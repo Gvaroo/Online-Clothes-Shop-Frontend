@@ -1,0 +1,48 @@
+<div class="order-history-container">
+  <h2>Products</h2>
+  <div *ngIf="hasErrors()">
+    <nz-alert
+      *ngFor="let field of errorKeys()"
+      nzShowIcon
+      nzType="error"
+      [nzMessage]="validationError[field]"
+      [ngStyle]="{ 'margin-bottom': '16px' }"
+    ></nz-alert>
+  </div>
+  <nz-table #basicTable [nzData]="products" *ngIf="products.length > 0">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of basicTable.data">
+        <td>{{ item.id }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.price }}</td>
+        <input
+          nz-input
+          placeholder="borderless"
+          type="number"
+          [(ngModel)]="item.quantity"
+          (change)="onQuantityChange(item)"
+          nzBorderless
+        />
+      </tr>
+    </tbody>
+  </nz-table>
+  <button
+    nz-button
+    nzType="primary"
+    [nzLoading]="loading"
+    nz-popconfirm
+    nzPopconfirmTitle="Are you sure you want to restock this products?"
+    nzPopconfirmPlacement="top"
+    (nzOnConfirm)="restockProducts()"
+  >
+    Restock Products
+  </button>
+</div>

@@ -1,0 +1,70 @@
+<div class="product-container" *ngIf="!loading">
+  <div>
+    <div class="product-container__image">
+       
+      <nz-carousel nzDots>
+        <div nz-carousel-content *ngFor="let image of product.images">
+          <img [src]="image.imageUrl" alt="Product image" />
+        </div>
+      </nz-carousel>
+    </div>
+    <div class="product-container__details">
+      <h2 class="title">{{ product.name }}</h2>
+      <div class="reviews">
+        <div class="rating">
+          <nz-rate [ngModel]="product.averageRating" nzDisabled></nz-rate>
+        </div>
+        <span class="review-link">{{ product.reviewsCount }} Review(s)</span>
+      </div>
+      <div class="price-container">
+        <h2 class="price">{{ product.price | currency : "USD" }}</h2>
+        <span
+          class="availability"
+          [ngStyle]="{ color: quantity > 0 ? 'inherit' : 'red' }"
+          >{{ quantity === 0 ? "Out of stock" : "In stock" }}</span
+        >
+      </div>
+      <div class="description">Brand: {{ product.brand.name }}</div>
+      <div class="description">{{ product.description }}</div>
+      <div class="cta">
+        <div class="add-to-cart">
+          <nz-select [(ngModel)]="sizeId" nzPlaceHolder="Choose Size">
+            <nz-option
+              *ngFor="let p of product.sizes"
+              [nzValue]="p.sizeId"
+              [nzLabel]="p.sizeName"
+            ></nz-option>
+          </nz-select>
+          <span>QTY:</span>
+          <nz-input-number
+            [(ngModel)]="quantity"
+            [nzMin]="product.quantity > 0 ? 1 : 0"
+            [nzMax]="product.quantity > 0 ? product.quantity : 0"
+            [nzStep]="1"
+          ></nz-input-number>
+          <button
+            nz-button
+            nzType="primary"
+            (click)="addToCart()"
+            [disabled]="quantity === 0"
+          >
+            Add to cart
+          </button>
+        </div>
+        <div class="category">
+          <span>Category: </span> {{ product.category.name }} >
+          {{ product.subCategories.name }}
+        </div>
+        <div class="social-links">
+          <span>Share: </span>
+          <i nz-icon nzType="facebook" nzTheme="outline"></i>
+          <i nz-icon nzType="twitter" nzTheme="outline"></i>
+          <i nz-icon nzType="google-plus" nzTheme="outline"></i>
+          <i nz-icon nzType="mail" nzTheme="outline"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="additional"></div>
+  <app-reviews></app-reviews>
+</div>
