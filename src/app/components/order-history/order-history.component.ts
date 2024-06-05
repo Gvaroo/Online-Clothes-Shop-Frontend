@@ -10,12 +10,15 @@ import { ProductService } from 'src/app/services/product.service';
 export class OrderHistoryComponent {
   orders: any[] = [];
   error = '';
+  isOrderDataNull: boolean = false;
   constructor(private cartService: CartService) {}
 
   ngOnInit(): void {
     this.cartService.getUserOrderHistory().subscribe(
       (res: any) => {
         this.orders = res.data;
+        if (res.data.length === 0) this.isOrderDataNull = true;
+        else this.isOrderDataNull = false;
       },
       (err) => {
         this.error = err.error.message;
