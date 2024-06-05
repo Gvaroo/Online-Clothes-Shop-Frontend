@@ -157,3 +157,128 @@ nz-carousel .slick-dots li.slick-active button {
     }
   }
 }
+@media screen and (max-width: 768px) {
+  nz-carousel .slick-slide {
+    height: 300px;
+  }
+
+  .product-container__image > img {
+    height: auto;
+  }
+
+  .product-container__details {
+    padding: 12px;
+
+    .title {
+      font-size: 1.25rem;
+    }
+
+    .reviews .rating > i {
+      font-size: 0.875rem;
+    }
+
+    .reviews .review-link {
+      font-size: 0.75rem;
+    }
+
+    .price-container .price {
+      font-size: 1.5rem;
+    }
+
+    .price-container .availability {
+      font-size: 0.875rem;
+    }
+
+    .cta .add-to-cart > button {
+      height: 40px;
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .product-container__image {
+    margin-top: 0; /* Remove margin-top */
+  }
+
+  nz-carousel .slick-slide {
+    height: 300px;
+  }
+
+  .product-container__image > img {
+    height: auto;
+    display: block;
+    margin: 0 auto; /* Center the image */
+  }
+
+  .product-container__details {
+    padding: 12px;
+
+    .title {
+      font-size: 1.25rem;
+    }
+
+    .reviews .rating > i {
+      font-size: 0.875rem;
+    }
+
+    .reviews .review-link {
+      font-size: 0.75rem;
+    }
+
+    .price-container .price {
+      font-size: 1.5rem;
+    }
+
+    .price-container .availability {
+      font-size: 0.875rem;
+    }
+
+    .cta .add-to-cart > button {
+      height: 40px;
+    }
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .product-container__image {
+    margin-top: 0;
+  }
+
+  nz-carousel .slick-slide {
+    height: 200px;
+  }
+
+  .product-container__image > img {
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+  .product-container__details {
+    padding: 8px;
+
+    .title {
+      font-size: 1rem;
+    }
+
+    .reviews .rating > i {
+      font-size: 0.75rem;
+    }
+
+    .reviews .review-link {
+      font-size: 0.625rem;
+    }
+
+    .price-container .price {
+      font-size: 1.25rem;
+    }
+
+    .price-container .availability {
+      font-size: 0.75rem;
+    }
+
+    .cta .add-to-cart > button {
+      height: 36px;
+    }
+  }
+}
