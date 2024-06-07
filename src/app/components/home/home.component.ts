@@ -1,8 +1,12 @@
 import {
   ChangeDetectorRef,
   Component,
+  ElementRef,
   HostListener,
+  QueryList,
   Renderer2,
+  ViewChild,
+  ViewChildren,
 } from '@angular/core';
 import { ProductDTO } from 'src/app/models/Cart/ProductDTO';
 import { GetAllFilterOptionsDTO } from 'src/app/models/Product/GetAllFilterOptionsDTO';
@@ -12,8 +16,7 @@ import { GetProductsDTO } from 'src/app/models/Product/GetProductsDTO';
 import { GetSubCategoriesDTO } from 'src/app/models/Product/GetSubCategoriesDTO';
 import { CartService } from 'src/app/services/cart.service';
 import { ProductService } from 'src/app/services/product.service';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { Router } from '@angular/router';
+import { ProductCardComponent } from '../product-card/product-card.component';
 
 @Component({
   selector: 'app-home',
@@ -21,6 +24,8 @@ import { Router } from '@angular/router';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent {
+  @ViewChildren(ProductCardComponent)
+  productList!: QueryList<ProductCardComponent>;
   products: GetProductsDTO[] = [];
   totalProducts: number = 20;
   filterOptions!: GetAllFilterOptionsDTO;
@@ -33,6 +38,7 @@ export class HomeComponent {
   pageSize = 9;
   pageIndex = 1;
   isFilterDataNull = false;
+  isPagination: boolean = false;
   filterData: GetFilterDataDTO = {
     sortId: undefined,
     categoryId: undefined,
@@ -45,6 +51,13 @@ export class HomeComponent {
     productName: undefined,
     IsAllFiltersCleared: true,
   };
+
+  ngAfterViewInit() {
+    this.productList.changes.subscribe(() => {
+      this.scrollToProductList();
+    });
+    this.cdr.detectChanges();
+  }
 
   updateDropdownValue(mobile: boolean) {
     if (
@@ -232,7 +245,6 @@ export class HomeComponent {
       (res: any) => {
         this.products = res.data.items;
         this.totalProducts = res.data.totalCount;
-        console.log(res);
         this.loading = false;
       },
       (err) => {
@@ -243,8 +255,11 @@ export class HomeComponent {
   }
   onPageIndexChange(pageIndex: number): void {
     this.pageIndex = pageIndex;
+    this.isPagination = true;
     if (this.filterData.IsAllFiltersCleared) this.loadProducts();
     else this.sendFilterData();
+
+    this.scrollToProductList();
   }
 
   filters = [
@@ -259,6 +274,21 @@ export class HomeComponent {
     { key: 'brandId', placeholder: 'Brand', optionsKey: 'brands' },
     { key: 'colorId', placeholder: 'Color', optionsKey: 'colors' },
   ];
+
+  private scrollToProductList(): void {
+    if (this.isPagination) {
+      setTimeout(() => {
+        if (this.productList && this.productList.first) {
+          console.log('tessssssssssstt');
+          this.productList.first.elRef.nativeElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+          });
+        }
+      }, 0);
+      this.isPagination = false; // Reset flag after scroll
+    }
+  }
 
   shouldShowClearAll(): boolean {
     return (

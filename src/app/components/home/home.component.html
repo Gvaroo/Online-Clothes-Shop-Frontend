@@ -133,6 +133,8 @@
     <div class="products__header">
       <h2>Products</h2>
     </div>
+
+    <!-- Loading spinner -->
     <div *ngIf="loading" class="products__loading">
       <ng-template #indicatorTemplate>
         <i
@@ -143,14 +145,18 @@
       </ng-template>
       <nz-spin nzSimple [nzIndicator]="indicatorTemplate"></nz-spin>
     </div>
+    <!-- Product list -->
     <div class="products__list" *ngIf="!loading">
       <div *ngIf="isFilterDataNull"><nz-empty></nz-empty></div>
       <app-product-card
-        *ngFor="let product of products"
+        *ngFor="let product of products; let i = index"
         [getProducts]="product"
         [onAdd]="cartService.addProduct.bind(cartService)"
+        #productList
       ></app-product-card>
     </div>
+
+    <!-- Pagination -->
     <nz-pagination
       [(nzPageIndex)]="pageIndex"
       [(nzPageSize)]="pageSize"

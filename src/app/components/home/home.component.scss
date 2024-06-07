@@ -296,3 +296,6 @@ nz-pagination {
   display: flex;
   justify-content: flex-end;
 }
+.products__list:focus {
+  outline: none;
+}

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input } from '@angular/core';
 import { GetProductsDTO } from 'src/app/models/Product/GetProductsDTO';
 
 @Component({
@@ -9,4 +9,5 @@ import { GetProductsDTO } from 'src/app/models/Product/GetProductsDTO';
 export class ProductCardComponent {
   @Input() getProducts: GetProductsDTO | undefined;
   @Input() onAdd: any;
+  constructor(public elRef: ElementRef) {}
 }
