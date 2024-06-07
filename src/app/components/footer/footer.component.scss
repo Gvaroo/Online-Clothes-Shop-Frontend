@@ -1,10 +1,13 @@
 .footer {
-  margin-top: 5%;
   background-color: #222;
   color: #fff;
   padding: 40px 20px;
+  margin-top: 4%;
   font-family: "Arial", sans-serif;
   text-align: left;
+  position: relative;
+  bottom: 0;
+  width: 100%;
 }
 
 .footer__container {
